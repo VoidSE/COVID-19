@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="../static/JS/echarts.min.js"></script>
+    <script src="../static/JS/jquery-3.4.1.min.js"></script>
+    <!--<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>-->
+
+</head>
+<body>
+    <myEcharts :moveTime="4000"></myEcharts>
+    <div style="width:1000px; height:700px; background-color: #00e4ff" ref="broken1"></div>
+    <script>
+          //1. 获取到时间
+         props : {
+              moveTime : null
+          };
+        function data() {
+            return{
+                timer : null
+            }
+        };
+        function beforeDestroy(){
+            //2.销毁前清除定时器
+            clearInterval(this.timer);
+        };
+        function echartsFun() {
+            let brokenView = this.echarts.init(this.$refs.broken1);
+           //3.设置定时器
+          this.timer = setInterval(()=>{
+                option = {
+                    tooltip: {
+                        trigger: 'axis',
+                        axisPointer: {
+                            type: 'shadow'
+                        }
+                    },
+                    grid: {
+                        top: '10%',
+                        left: '2%',
+                        right: '10%',
+                        bottom: '3%',
+                        containLabel: true,
+                    },
+                    legend: {
+                        show: true,
+                        right: 'right',
+                        data: ['已确诊', '已治愈']
+                    },
+                    xAxis: {
+                        type: 'value',
+                        boundaryGap: [0, 0.01],
+                        splitLine: {
+                            show: false,
+                        }
+                    },
+                    yAxis: {
+                        type: 'category',
+                        data: ['北京', '湖北', '四川', '广东', '湖南'],
+                        inverse: false,
+                    },
+                    series: [
+                        {
+                            name: '已确诊',
+                            type: 'bar',
+                            data: [5000, 10000, 15000, 30000, 40000]
+                        },
+                        {
+                            name: '已治愈',
+                            type: 'bar',
+                            data: [4900, 9999, 14000, 20000, 30000]
+                        }
+                    ],
+                    backgroundColor: '#111619',
+                };
+            },this.moveTime)
+
+          //4.清除整个对象
+          brokenView.clear();
+          brokenView.setOption(option)
+        };
+
+    </script>
+
+
+</body>
+</html>

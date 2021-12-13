@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>COVID-19疫情实时监控大屏</title>
+    <link rel="stylesheet" href="../static/CSS/main.css">
+    <script src="../static/JS/jquery-3.4.1.min.js"></script>
+    <script src="../static/JS/echarts.min.js"></script>
+    <script src="../static/JS/china.js"></script>
+    <script src="../static/JS/echarts-wordcloud.min.js"></script>
+    <meta http-equiv="refresh" content="86400">
+</head>
+<body>
+<div>
+    <dl>
+        <dt><a href="#"><img src="../static/CSS/meau.png"></a></dt>
+        <dd>
+            <ul>
+                <li id="meau1"><a id="a_up" href="javascript: void(0)" onclick="displayWindow()">更新</a></li>
+                <li id="meau2"><a id="a_eu" href="{{ url_for('european') }}" rel="external nofollow" >欧洲</a></li>
+            </ul>
+        </dd>
+    </dl>
+    <div id="add" class="add_confirm">
+        <div id="add_left_top"></div>
+        <div id="add_right_top">
+            <a href="javascript: void(0)" onclick="hideWindow()"><img src="../static/CSS/close.png" alt=""></a>
+        </div>
+        <div id="add_left_bottom"></div>
+        <div id="add_right_bottom"></div>
+        <div id="add_center">
+            <form name="add_form" action="" method="post" id="confirm_form" method="post">
+                <label for="">今日新增省份：</label>
+                <select name="sel_province" id="sel1">
+                    <option value=""></option>
+                    <option value="新疆">新疆</option>
+                    <option value="西藏">西藏</option>
+                    <option value="黑龙江">黑龙江</option>
+                    <option value="吉林">吉林</option>
+                    <option value="辽宁">辽宁</option>
+                    <option value="内蒙古">内蒙古</option>
+                    <option value="北京">北京</option>
+                    <option value="宁夏">宁夏</option>
+                    <option value="山西">山西</option>
+                    <option value="河北">河北</option>
+                    <option value="天津">天津</option>
+                    <option value="青海">青海</option>
+                    <option value="甘肃">甘肃</option>
+                    <option value="山西">山西</option>
+                    <option value="陕西">陕西</option>
+                    <option value="河北">河南</option>
+                    <option value="安徽">安徽</option>
+                    <option value="江苏">江苏</option>
+                    <option value="上海">上海</option>
+                    <option value="四川">四川</option>
+                    <option value="湖北">湖北</option>
+                    <option value="浙江">浙江</option>
+                    <option value="重庆">重庆</option>
+                    <option value="湖南">湖南</option>
+                    <option value="江西">江西</option>
+                    <option value="贵州">贵州</option>
+                    <option value="福建">福建</option>
+                    <option value="云南">云南</option>
+                    <option value="台湾">台湾</option>
+                    <option value="广西">广西</option>
+                    <option value="广东">广东</option>
+                    <option value="海南">海南</option>
+                    <option value="澳门">澳门</option>
+                    <option value="香港">香港</option>
+                </select><br><br>
+
+                <label for="">今日新增城市：</label>
+                <select name="sel_city" id="sel2"></select><br><br>
+
+                <input type="text" name="addNumber" class="add_number">今日新增数量：<br><br>
+                <input type="password" name="password" class="add_id">身份码：
+                <input id="submit" type="submit" value="提交">
+            </form>
+        </div>
+    </div>
+    <div id="shadow" class="shadow_css"></div>
+
+    <div id="top">COVID-19疫情实时监控大屏</div>
+    <div id="top_left1"></div>
+    <div id="top_left2"></div>
+    <div id="top_l1"></div>
+    <div id="top_l2"></div>
+    <div id="top_l3"></div>
+    <div id="top_l4"></div>
+    <div id="top_right1"></div>
+    <div id="top_right2"></div>
+    <div id="top_r1"></div>
+    <div id="top_r2"></div>
+    <div id="top_r3"></div>
+    <div id="top_r4"></div>
+    <div id="time"></div>
+    <div id="time_left_left"></div>
+    <div id="time_left"></div>
+    <div id="time_right"></div>
+    <div id="time_right_right"></div>
+
+    <div id="left">
+        <div id="left_top">监测数据分析</div>
+
+        <div id="left_c1_1">今日新增确诊及分布城市</div>
+        <div id="left_c1_2">&ensp;&ensp;&ensp;&ensp;
+            <p class="lc2">新增确诊</p>
+            <p class="lc3"></p>
+            <p class="lc4">例</p>&ensp;&ensp;&ensp;&ensp;
+            <p class="lc2">分布城市</p>
+            <p class="lc3"></p>
+            <p class="lc4">个</p>
+        </div>
+        <div id="left_c1_01"></div>
+        <div id="left_c1_02"></div>
+        <div id="left_c1_03"></div>
+
+        <div id="left_c2_1">境外输入详情</div>
+        <div id="left_c2_2">&ensp;&ensp;&ensp;&ensp;
+            <p class="lc2">今日境外输入</p>
+            <p class="lc3"></p>
+            <p class="lc4">例</p>&ensp;&ensp;&ensp;&ensp;
+            <p class="lc2">分布城市</p>
+            <p class="lc3"></p>
+            <p class="lc4">个</p>
+        </div>
+        <div id="left_c2_3">&ensp;&ensp;&ensp;&ensp;
+            <p class="lc2">累计境外输入</p>
+            <p class="lc3"></p>
+            <p class="lc4">例</p>
+        </div>
+        <div id="left_c2_4">境外输入新增趋势</div>
+        <div id="left_c2_5"></div>
+        <div id="left_c2_01"></div>
+        <div id="left_c2_02"></div>
+        <div id="left_c2_03"></div>
+
+        <div id="left_c3_1">国内累计趋势</div>
+        <div id="left_c3_2"></div>
+    </div>
+
+    <div id="center1">
+        <div id="c1_top">现有确诊地域分布图</div>
+        <div id="c1_data"></div>
+    </div>
+
+    <div id="center2">
+        <div id="c2_top">监测数据实时情况</div>
+        <div id="c2_center">
+            <li class="c2_c1">日期</li>
+            <li class="c2_c1">省份</li>
+            <li class="c2_c1">城市</li>
+            <li class="c2_c1">今日新增</li>
+            <li class="c2_c1">现有确诊</li>
+            <li class="c2_c1">累计确诊</li>
+            <li class="c2_c1_1">已治愈</li>
+        </div>
+        <div id="parent" class="parent">
+            <div id="child1" class="child">
+                <li class="c2_c3 li1"></li>
+                <li class="c2_c3 li2"></li>
+                <li class="c2_c3 li3"></li>
+                <li class="c2_c3 li4"></li>
+                <li class="c2_c3 li5"></li>
+                <li class="c2_c3 li6"></li>
+                <li class="c2_c3_1 li7"></li>
+
+                <li class="c2_c2 li1"></li>
+                <li class="c2_c2 li2"></li>
+                <li class="c2_c2 li3"></li>
+                <li class="c2_c2 li4"></li>
+                <li class="c2_c2 li5"></li>
+                <li class="c2_c2 li6"></li>
+                <li class="c2_c2_2 li7"></li>
+
+                <li class="c2_c3 li1"></li>
+                <li class="c2_c3 li2"></li>
+                <li class="c2_c3 li3"></li>
+                <li class="c2_c3 li4"></li>
+                <li class="c2_c3 li5"></li>
+                <li class="c2_c3 li6"></li>
+                <li class="c2_c3_1 li7"></li>
+
+                <li class="c2_c2 li1"></li>
+                <li class="c2_c2 li2"></li>
+                <li class="c2_c2 li3"></li>
+                <li class="c2_c2 li4"></li>
+                <li class="c2_c2 li5"></li>
+                <li class="c2_c2 li6"></li>
+                <li class="c2_c2_2 li7"></li>
+
+                <li class="c2_c3 li1"></li>
+                <li class="c2_c3 li2"></li>
+                <li class="c2_c3 li3"></li>
+                <li class="c2_c3 li4"></li>
+                <li class="c2_c3 li5"></li>
+                <li class="c2_c3 li6"></li>
+                <li class="c2_c3_1 li7"></li>
+
+                <li class="c2_c2 li1"></li>
+                <li class="c2_c2 li2"></li>
+                <li class="c2_c2 li3"></li>
+                <li class="c2_c2 li4"></li>
+                <li class="c2_c2 li5"></li>
+                <li class="c2_c2 li6"></li>
+                <li class="c2_c2_2 li7"></li>
+
+{#                <li class="c2_c3 li1">1</li>#}
+{#                <li class="c2_c3 li2">1</li>#}
+{#                <li class="c2_c3 li3">1</li>#}
+{#                <li class="c2_c3 li4">1</li>#}
+{#                <li class="c2_c3 li5">1</li>#}
+{#                <li class="c2_c3 li6">1</li>#}
+{#                <li class="c2_c3_1 li7">1</li>#}
+{##}
+{#                <li class="c2_c2 li1">1</li>#}
+{#                <li class="c2_c2 li2">1</li>#}
+{#                <li class="c2_c2 li3">1</li>#}
+{#                <li class="c2_c2 li4">1</li>#}
+{#                <li class="c2_c2 li5">1</li>#}
+{#                <li class="c2_c2 li6">1</li>#}
+{#                <li class="c2_c2_2 li7">1</li>#}
+{##}
+{#                <li class="c2_c3 li1">1</li>#}
+{#                <li class="c2_c3 li2">1</li>#}
+{#                <li class="c2_c3 li3">1</li>#}
+{#                <li class="c2_c3 li4">1</li>#}
+{#                <li class="c2_c3 li5">1</li>#}
+{#                <li class="c2_c3 li6">1</li>#}
+{#                <li class="c2_c3_1 li7">1</li>#}
+{##}
+{#                <li class="c2_c2 li1">1</li>#}
+{#                <li class="c2_c2 li2">1</li>#}
+{#                <li class="c2_c2 li3">1</li>#}
+{#                <li class="c2_c2 li4">1</li>#}
+{#                <li class="c2_c2 li5">1</li>#}
+{#                <li class="c2_c2 li6">1</li>#}
+{#                <li class="c2_c2_2 li7">1</li>#}
+{##}
+{#                <li class="c2_c3 li1">1</li>#}
+{#                <li class="c2_c3 li2">1</li>#}
+{#                <li class="c2_c3 li3">1</li>#}
+{#                <li class="c2_c3 li4">1</li>#}
+{#                <li class="c2_c3 li5">1</li>#}
+{#                <li class="c2_c3 li6">1</li>#}
+{#                <li class="c2_c3_1 li7">1</li>#}
+{##}
+{#                <li class="c2_c2 li1">1</li>#}
+{#                <li class="c2_c2 li2">1</li>#}
+{#                <li class="c2_c2 li3">1</li>#}
+{#                <li class="c2_c2 li4">1</li>#}
+{#                <li class="c2_c2 li5">1</li>#}
+{#                <li class="c2_c2 li6">1</li>#}
+{#                <li class="c2_c2_2 li7">1</li>#}
+
+            </div>
+            <div id="child2" class="child"></div>
+        </div>
+    </div>
+
+    <div id="right1">
+        <div id="r1_top">监测数据总情况</div>
+        <div id="r1_center">
+            <div class="num1">
+                <div class="num_title">累计确诊</div>
+                <div class="num_data"></div>
+            </div>
+            <div class="num2">
+                <div class="num_title">累计治愈</div>
+                <div class="num_data"></div>
+            </div>
+            <div class="num3">
+                <div class="num_title">累计死亡</div>
+                <div class="num_data"></div>
+            </div>
+        </div>
+        <div id="r1_bottom">
+            <div id="r1_b_1" class="num1"></div>
+            <div id="r1_b_2" class="num2"></div>
+            <div id="r1_b_3" class="num3"></div>
+        </div>
+    </div>
+
+    <div id="right2">
+        <div id="r2_top">全国新增趋势</div>
+        <div id="r2_data"></div>
+    </div>
+
+    <div id="right3">
+        <div id="r3_top">全国累计排名</div>
+        <div id="r3_data"></div>
+    </div>
+
+    <script type="text/javascript">
+$(document).ready(function(){
+ $("dd").hide();
+ $("dt a").click(function(){
+ $(this).parent().toggleClass("bg");
+ $(this).parent().prevAll("dt").removeClass("bg")
+ $(this).parent().nextAll("dt").removeClass("bg")
+ $(this).parent().next().slideToggle();
+ $(this).parent().prevAll("dd").slideUp("slow");
+ $(this).parent().next().nextAll("dd").slideUp("slow");
+ return false;
+ });
+});
+</script>
+
+    <script src="../static/JS/add_confirm.js"></script>
+    <script src="../static/JS/add_confirm_data.js"></script>
+    <script src="../static/JS/add_confirm_form.js"></script>
+
+    <script src="../static/JS/left_c2_5.js"></script>
+    <script src="../static/JS/left_c3_2.js"></script>
+    <script src="../static/JS/center1.js"></script>
+{#    <script src="../static/JS/center2.js"></script>#}
+    <script src="../static/JS/r1_b_1.js"></script>
+    <script src="../static/JS/r1_b_2.js"></script>
+    <script src="../static/JS/r1_b_3.js"></script>
+    <script src="../static/JS/r2_data.js"></script>
+    <script src="../static/JS/r3_data.js"></script>
+
+    <script src="../static/JS/controller.js"></script>
+
+</div>
+</body>
+</html>
